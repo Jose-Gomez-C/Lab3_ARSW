@@ -23,7 +23,6 @@ public class CinemaServicesTest {
 		ApplicationContext classPaht = new ClassPathXmlApplicationContext("applicationContext.xml");
 		CinemaServices cinemaServices = classPaht.getBean(CinemaServices.class);
 		Cinema cine = cinemaServices.getCinemaByName("cinemaX");
-		System.out.println(cine.getName());
 		assertEquals(cine.getName(),"cinemaX");
 		
 	}
