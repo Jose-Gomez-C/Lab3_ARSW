@@ -2,17 +2,25 @@
 import edu.eci.arsw.cinema.model.Cinema;
 import edu.eci.arsw.cinema.model.CinemaFunction;
 import edu.eci.arsw.cinema.model.Movie;
+import edu.eci.arsw.cinema.persistence.CinemaException;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.impl.InMemoryCinemaPersistence;
 import edu.eci.arsw.cinema.services.CinemaServices;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import junit.framework.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -78,39 +86,50 @@ public class InMemoryPersistenceTest {
                 
         
     }
+    
     @Test
     public void shouldBeAbletoReturnNameCinema(){
+        ApplicationContext classPaht = new ClassPathXmlApplicationContext("applicationContext.xml");
+        CinemaServices cinemaServices = classPaht.getBean(CinemaServices.class);
+        Cinema cine = cinemaServices.getCinemaByName("cinemaX");
+        assertEquals(cine.getName(),"cinemaX");
+		
+    }
+    @Test
+    public void shouldBeAbleToBuyTicket(){
+        Map<String,Cinema> cinemas=new HashMap<>();
+        ApplicationContext classPaht = new ClassPathXmlApplicationContext("applicationContext.xml");
+        CinemaServices cinemaServices = classPaht.getBean(CinemaServices.class);
+        Cinema cine = cinemaServices.getCinemaByName("cinemaX");
         
-        InMemoryCinemaPersistence ipct=new InMemoryCinemaPersistence();
-        
-        String functionDate = "2018-12-18 15:30";
-        List<CinemaFunction> functions= new ArrayList<>();
-        CinemaFunction funct1 = new CinemaFunction(new Movie("SuperHeroes Movie 2","Action"),functionDate);
-        CinemaFunction funct2 = new CinemaFunction(new Movie("The Night 2","Horror"),functionDate);
-        functions.add(funct1);
-        functions.add(funct2);
-        Cinema c=new Cinema("Movies Bogotá",functions);
+        /**List<CinemaFunction> functions = cinemaServices.getFunctionsbyCinemaAndDate("cinemaX","2018-12-18 15:30");
+        CinemaFunction function = functions.get(0);**/
+        int beforeSeats = 0;
+        int afterSeats = 0;
+        for (CinemaFunction i : cine.getFunctions()) {
+            if (i.getMovie().getName().equals("The Night") && i.getDate().equals("2018-12-18 15:30")) {
+                beforeSeats = i.getSeats().size();
+            }
+        }/**
+        System.out.println(beforeSeats+"..");
         try {
-            ipct.saveCinema(c);
-        } catch (CinemaPersistenceException ex) {
-            fail("Cinema persistence failed inserting the first cinema.");
+            cinemaServices.buyTicket(1, 1, "cinemaX", "2018-12-18 15:30", "The Night");
+        } catch (CinemaException ex) {
+            Logger.getLogger(InMemoryPersistenceTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        functionDate = "2020-12-18 15:30";
-        functions= new ArrayList<>();
-        funct1 = new CinemaFunction(new Movie("Advengers within Black Panther","Action"),functionDate);
-        funct2 = new CinemaFunction(new Movie("Fast And Furius whithin Brian O'conner","Action"),functionDate);
-        functions.add(funct1);
-        functions.add(funct2);
-        c=new Cinema("Movies Medellin",functions);
-        try {
-            ipct.saveCinema(c);
-        } catch (CinemaPersistenceException ex) {
-            fail("Cinema persistence failed inserting the first cinema.");
+        for (CinemaFunction i : cine.getFunctions()) {
+            if (i.getMovie().getName().equals("The Night") && i.getDate().equals("2018-12-18 15:30")) {
+                System.out.println("Aca llego");
+                for (int j= 0; j< i.getSeats().size();j++){
+                    
+                    if(i.getSeats().equals(true)){
+                        afterSeats += 1;
+                    }
+                }
+            }
         }
-        
-        //Assert.assertEquals(functionDate, true, true);
+        System.out.println(afterSeats+"....");
+        assertTrue(beforeSeats > afterSeats);
+              **/  
     }
 }
