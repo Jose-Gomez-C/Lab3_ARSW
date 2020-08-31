@@ -27,7 +27,7 @@ public class CinemaServices {
     @Autowired
     @Qualifier("inMemoryCinemaPersistence")
     
-    CinemaPersitence cps;
+    CinemaPersitence cps ;
     
     public void addNewCinema(Cinema c){
         
@@ -43,13 +43,16 @@ public class CinemaServices {
      * @return the cinema of the given name created by the given author
      * @throws CinemaException
      */
-    public Cinema getCinemaByName(String name) throws CinemaException{
+    public Cinema getCinemaByName(String name){
+    	Cinema resultado= null;
         try {
-            return cps.getCinema(name);
+        	
+            resultado = cps.getCinema(name);
         } catch (CinemaPersistenceException ex) {
             Logger.getLogger(CinemaServices.class.getName()).log(Level.SEVERE, null, ex);
         }
-        throw new UnsupportedOperationException("Not supported yet."); 
+        
+        return resultado;
     }
     
     
@@ -59,7 +62,6 @@ public class CinemaServices {
     }
     
     public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) {
-        
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 

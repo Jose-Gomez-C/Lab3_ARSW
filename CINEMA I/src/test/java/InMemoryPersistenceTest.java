@@ -4,6 +4,8 @@ import edu.eci.arsw.cinema.model.CinemaFunction;
 import edu.eci.arsw.cinema.model.Movie;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.impl.InMemoryCinemaPersistence;
+import edu.eci.arsw.cinema.services.CinemaServices;
+
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
@@ -96,7 +98,7 @@ public class InMemoryPersistenceTest {
         
         
         
-        functionDate = "2018-12-18 15:30";
+        functionDate = "2020-12-18 15:30";
         functions= new ArrayList<>();
         funct1 = new CinemaFunction(new Movie("Advengers within Black Panther","Action"),functionDate);
         funct2 = new CinemaFunction(new Movie("Fast And Furius whithin Brian O'conner","Action"),functionDate);
