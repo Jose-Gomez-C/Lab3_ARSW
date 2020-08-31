@@ -6,6 +6,7 @@ import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.impl.InMemoryCinemaPersistence;
 import java.util.ArrayList;
 import java.util.List;
+import junit.framework.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -74,5 +75,40 @@ public class InMemoryPersistenceTest {
         }
                 
         
+    }
+    @Test
+    public void shouldBeAbletoReturnNameCinema(){
+        
+        InMemoryCinemaPersistence ipct=new InMemoryCinemaPersistence();
+        
+        String functionDate = "2018-12-18 15:30";
+        List<CinemaFunction> functions= new ArrayList<>();
+        CinemaFunction funct1 = new CinemaFunction(new Movie("SuperHeroes Movie 2","Action"),functionDate);
+        CinemaFunction funct2 = new CinemaFunction(new Movie("The Night 2","Horror"),functionDate);
+        functions.add(funct1);
+        functions.add(funct2);
+        Cinema c=new Cinema("Movies Bogotá",functions);
+        try {
+            ipct.saveCinema(c);
+        } catch (CinemaPersistenceException ex) {
+            fail("Cinema persistence failed inserting the first cinema.");
+        }
+        
+        
+        
+        functionDate = "2018-12-18 15:30";
+        functions= new ArrayList<>();
+        funct1 = new CinemaFunction(new Movie("Advengers within Black Panther","Action"),functionDate);
+        funct2 = new CinemaFunction(new Movie("Fast And Furius whithin Brian O'conner","Action"),functionDate);
+        functions.add(funct1);
+        functions.add(funct2);
+        c=new Cinema("Movies Medellin",functions);
+        try {
+            ipct.saveCinema(c);
+        } catch (CinemaPersistenceException ex) {
+            fail("Cinema persistence failed inserting the first cinema.");
+        }
+        
+        //Assert.assertEquals(functionDate, true, true);
     }
 }

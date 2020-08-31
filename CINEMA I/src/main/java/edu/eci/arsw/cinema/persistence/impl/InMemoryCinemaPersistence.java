@@ -15,11 +15,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author cristian
  */
+@Component
+@Qualifier("inMemoryCinemaPersistence")
 public class InMemoryCinemaPersistence implements CinemaPersitence{
     
     private final Map<String,Cinema> cinemas=new HashMap<>();
@@ -43,6 +47,8 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
 
     @Override
     public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) {
+        
+        
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
