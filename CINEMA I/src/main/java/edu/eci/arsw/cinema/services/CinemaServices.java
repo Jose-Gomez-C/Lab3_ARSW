@@ -5,15 +5,20 @@
  */
 package edu.eci.arsw.cinema.services;
 
+
 import edu.eci.arsw.cinema.model.Cinema;
 import edu.eci.arsw.cinema.model.CinemaFunction;
 import edu.eci.arsw.cinema.persistence.CinemaException;
+import edu.eci.arsw.cinema.persistence.CinemaFilter;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.CinemaPersitence;
+import edu.eci.arsw.cinema.persistence.CinemaFilterException;
+
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -29,12 +34,22 @@ public class CinemaServices {
     
     CinemaPersitence cps ;
     
-    public void addNewCinema(Cinema c){
-        
+    @Autowired
+    @Qualifier("cinemaFilterGenero")
+    
+    CinemaFilter cfg;
+    
+    @Autowired
+    @Qualifier("cinemaFilterDisponibilidad")
+    
+    CinemaFilter cfd;
+    
+    public void addNewCinema(Cinema c) throws CinemaPersistenceException{
+        cps.saveCinema(c);
     }
     
     public Set<Cinema> getAllCinemas(){
-        return null;
+        return cps.getAllCinemas();
     }
     
     /**
@@ -58,12 +73,18 @@ public class CinemaServices {
     
     public void buyTicket(int row, int col, String cinema, String date, String movieName) throws CinemaException{
         cps.buyTicket(row, col, cinema, date, movieName);
-        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
     public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        return cps.getFunctionsbyCinemaAndDate(cinema, date);
     }
-
+    public List<CinemaFunction> filtroGenero(String fecha, String cinema, String genero) throws CinemaFilterException {
+    	List<CinemaFunction> funciones = getFunctionsbyCinemaAndDate(cinema, fecha);
+		return cfg.filtros(funciones, genero);
+	}
+    public List<CinemaFunction> filtroDisponibilida(String name, String fecha, String asientos) throws CinemaFilterException{
+    	List<CinemaFunction> funciones = getFunctionsbyCinemaAndDate(name, fecha);
+    	return cfd.filtros(funciones, asientos);
+    }
 
 }
