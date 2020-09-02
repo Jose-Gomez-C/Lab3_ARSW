@@ -129,68 +129,66 @@ public class InMemoryPersistenceTest {
 
 
 
-	}
-	@Test
-	public void shouldBeAbleToBuyAll() {
-		Cinema cine = cinemaServices.getCinemaByName("cinemaX");
+    }
+    @Test
+    public void shouldBeAbleToBuyAll() {
+            Cinema cine = cinemaServices.getCinemaByName("cinemaX");
 
-		int beforeSeats = contarPuestos(cine);
-		int j=0;
-		int k=0;
-		try {
-			for (int i = 0; i<84 ; i++) {
-				if (k % 12 == 0 && k != 0) {
-					j++;
-					k=0;
-				}
-				cinemaServices.buyTicket(j, k, "cinemaX", "2018-12-18 15:30", "The Night");
-				k++;
-			}
-		} catch (CinemaException ex) {
-			Logger.getLogger(InMemoryPersistenceTest.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		int afterSeats = contarPuestos(cine);
-		assertEquals(0 , afterSeats);
-		try {
-			cinemaServices.buyTicket(6,11, "cinemaX", "2018-12-18 15:30", "The Night");
-		} catch (CinemaException e) {
-			assertTrue(true);
-		}
-	}
-	@Test
-	public void shouldBeAbleToNotBuyAll() {
-		Cinema cine = cinemaServices.getCinemaByName("cinemaX");
-		int beforeSeats = contarPuestos(cine) ;
-		int afterSeats = contarPuestos(cine);
+            int beforeSeats = contarPuestos(cine);
+            int j = 0;
+            int k = 0;
+            try {
+                for (int i = 0; i < 84; i++) {
+                    if (k % 12 == 0 && k != 0) {
+                        j++;
+                        k = 0;
+                    }
+                    cinemaServices.buyTicket(j, k, "cinemaX", "2018-12-18 15:30", "The Night");
+                    k++;
+                }
+        } catch (CinemaException ex) {
+            Logger.getLogger(InMemoryPersistenceTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int afterSeats = contarPuestos(cine);
+        assertEquals(0, afterSeats);
+        try {
+            cinemaServices.buyTicket(6, 11, "cinemaX", "2018-12-18 15:30", "The Night");
+        } catch (CinemaException e) {
+            assertTrue(true);
+        }
+    }
 
-		assertEquals(beforeSeats, afterSeats);
-	}
-	public void shouldBeAbleTo() {
+    @Test
+    public void shouldBeAbleToNotBuyAll() {
+        Cinema cine = cinemaServices.getCinemaByName("cinemaX");
+        int beforeSeats = contarPuestos(cine);
+        int afterSeats = contarPuestos(cine);
 
-	}
-	private List<String> getNameMovie(List<CinemaFunction> funciones) {
-		List<String> movies = new ArrayList<String>();
-		for (CinemaFunction i: funciones) {
-			movies.add(i.getMovie().getName());
-		}
-		return movies;
-	}
-	private int contarPuestos(Cinema cine) {
-		int puestos = 0;
-		for (CinemaFunction i : cine.getFunctions()) {
-			if (i.getMovie().getName().equals("The Night") && i.getDate().equals("2018-12-18 15:30")) {
-				for (int j= 0; j< i.getSeats().size();j++){
-					for(int k=0; k< i.getSeats().get(j).size();k++) {
-						if(i.getSeats().get(j).get(k)) {
-							puestos += 1;
-						}
-					}
-				}
-			}
-		}
-		return puestos;
-	}
+        assertEquals(beforeSeats, afterSeats);
+    }
 
+    private List<String> getNameMovie(List<CinemaFunction> funciones) {
+        List<String> movies = new ArrayList<String>();
+        for (CinemaFunction i : funciones) {
+            movies.add(i.getMovie().getName());
+        }
+        return movies;
+    }
 
+    private int contarPuestos(Cinema cine) {
+        int puestos = 0;
+        for (CinemaFunction i : cine.getFunctions()) {
+            if (i.getMovie().getName().equals("The Night") && i.getDate().equals("2018-12-18 15:30")) {
+                for (int j = 0; j < i.getSeats().size(); j++) {
+                    for (int k = 0; k < i.getSeats().get(j).size(); k++) {
+                        if (i.getSeats().get(j).get(k)) {
+                            puestos += 1;
+                        }
+                    }
+                }
+            }
+        }
+        return puestos;
+    }
 
 }
